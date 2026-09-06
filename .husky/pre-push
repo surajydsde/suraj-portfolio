@@ -1,0 +1,7 @@
+echo "🔍 Linting..."
+npx eslint . --cache || { echo "❌ Lint failed. Push blocked."; exit 1; }
+
+echo "📝 Type-checking..."
+npx tsc --noEmit || { echo "❌ Type-check failed. Push blocked."; exit 1; }
+
+echo "✅ All checks passed! Push allowed."

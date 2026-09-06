@@ -1,0 +1,236 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg: #ffffff;
+  --color-bg-soft: #f5f5f7;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f5f5f7;
+  --color-border: #e5e5ea;
+  --color-ink: #1d1d1f;
+  --color-ink-soft: #424245;
+  --color-ink-faint: #86868b;
+  --color-brand: #0a84ff;
+  --color-brand-soft: #0a84ff22;
+  --color-brand-2: #a78bfa;
+  --color-brand-3: #f472b6;
+  --color-accent: #0a84ff;
+  --grid-color: rgba(0, 0, 0, 0.04);
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: var(--font-playfair), Georgia, serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.dark {
+  --color-bg: #0a0a0f;
+  --color-bg-soft: #111118;
+  --color-surface: #0a0a0f;
+  --color-surface-raised: #111118;
+  --color-border: #1e1e2e;
+  --color-ink: #f2f2f7;
+  --color-ink-soft: #aeaeb2;
+  --color-ink-faint: #636366;
+  --color-brand: #3b9eff;
+  --color-brand-soft: #3b9eff18;
+  --color-brand-2: #a78bfa;
+  --color-brand-3: #f472b6;
+  --color-accent: #3b9eff;
+  --grid-color: hsla(0, 0%, 100%, 0.03);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand),
+    var(--color-brand-2),
+    var(--color-brand-3)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* --- Grid background (matches reference: 48px graph-paper lines) --- */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* --- Subtle film-grain noise overlay across the whole page --- */
+.noise-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.4;
+}
+
+/* --- Glassmorphism surface --- */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+}
+
+/* --- Bento card: hairline border + mouse-tracking spotlight on hover --- */
+.bento-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s,
+    border-color 0.3s;
+}
+.bento-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    var(--color-brand-soft),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 0;
+}
+.bento-card:hover::before {
+  opacity: 1;
+}
+.bento-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Skill / tag badge --- */
+.skill-badge {
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.skill-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--color-brand-soft);
+}
+
+/* --- Nav link animated underline --- */
+.animated-underline {
+  position: relative;
+}
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-brand);
+  transition: width 0.3s;
+}
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* --- Spinning gradient profile ring --- */
+.profile-ring {
+  background: conic-gradient(
+    from 0deg,
+    var(--color-brand),
+    var(--color-brand-2),
+    var(--color-brand-3),
+    var(--color-brand)
+  );
+  animation: spin-slow 8s linear infinite;
+}
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* --- Typed-text blinking cursor --- */
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- Gentle float (decorative) --- */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* --- Scroll reveal --- */
+.section-fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s,
+    transform 0.6s;
+}
+.section-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
